@@ -19,7 +19,7 @@ public class ProxyController {
     public JsonNode getSubdivision() {
         String API_URL = "https://landhub.assam.gov.in/apidemo/index.php/NicApi/getSubdivs";
 
-        System.out.println("INSIDE PROXY");
+//        System.out.println("INSIDE PROXY");
 
         String requestPayload = "{\"apikey\":\"bhunaksha\",\"dist_code\":\"07\"}";
 
@@ -33,7 +33,7 @@ public class ProxyController {
         try {
             ResponseEntity<String> response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
 
-            System.out.println("Response: " + response);
+//            System.out.println("Response: " + response);
 
             if (response.getStatusCode() == HttpStatus.OK) {
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -42,7 +42,7 @@ public class ProxyController {
                 JsonNode dataNode = rootNode.path("data");
 
                 if (dataNode.isArray() && dataNode.size() > 0) {
-                    System.out.println("Data found: " + dataNode);
+                    //System.out.println("Data found: " + dataNode);
                     return dataNode;
                 } else {
                     System.out.println("No data found in the 'data' field.");
@@ -64,7 +64,7 @@ public class ProxyController {
     public JsonNode getCircles(@RequestParam String subdivCode) {
         String API_URL = "https://landhub.assam.gov.in/apidemo/index.php/NicApi/getCircles";
 
-        System.out.println("INSIDE PROXY");
+        //System.out.println("INSIDE PROXY");
 
         String requestPayload = "{\"apikey\":\"bhunaksha\",\"dist_code\":\"07\", \"subdiv_code\":\"" + subdivCode + "\"}";
 
@@ -77,7 +77,7 @@ public class ProxyController {
         try {
             ResponseEntity<String> response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
 
-            System.out.println("Response: " + response);
+            //System.out.println("Response: " + response);
 
             if (response.getStatusCode() == HttpStatus.OK) {
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -86,7 +86,7 @@ public class ProxyController {
                 JsonNode dataNode = rootNode.path("data");
 
                 if (dataNode.isArray() && dataNode.size() > 0) {
-                    System.out.println("Data found: " + dataNode);
+                    //System.out.println("Data found: " + dataNode);
                     return dataNode;
                 } else {
                     System.out.println("No data found in the 'data' field.");
@@ -109,11 +109,11 @@ public class ProxyController {
     public JsonNode getMouzas(@RequestParam String subdivCode, @RequestParam String circleCode) {
         String API_URL = "https://landhub.assam.gov.in/apidemo/index.php/NicApi/getMouzas";
 
-        System.out.println("INSIDE PROXY");
+        //System.out.println("INSIDE PROXY");
 
         String requestPayload = "{\"apikey\":\"bhunaksha\",\"dist_code\":\"07\",\"subdiv_code\":\"" + subdivCode + "\",\"cir_code\":\"" + circleCode + "\"}";
 
-        System.out.println(requestPayload);
+        //System.out.println(requestPayload);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -123,7 +123,7 @@ public class ProxyController {
         try {
             ResponseEntity<String> response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
 
-            System.out.println("Response: " + response);
+            //System.out.println("Response: " + response);
 
             if (response.getStatusCode() == HttpStatus.OK) {
                 // Parse the response body
@@ -133,7 +133,7 @@ public class ProxyController {
                 JsonNode dataNode = rootNode.path("data");
 
                 if (dataNode.isArray() && dataNode.size() > 0) {
-                    System.out.println("Data found: " + dataNode);
+                    //System.out.println("Data found: " + dataNode);
                     return dataNode;
                 } else {
                     System.out.println("No data found in the 'data' field.");
@@ -156,12 +156,12 @@ public class ProxyController {
     public JsonNode getLots(@RequestParam String subdivCode, @RequestParam String circleCode, @RequestParam String mouzaCode) {
         String API_URL = "https://landhub.assam.gov.in/apidemo/index.php/NicApi/getLots";
 
-        System.out.println("INSIDE PROXY");
+        //System.out.println("INSIDE PROXY");
 
 
         String requestPayload = "{\"apikey\":\"bhunaksha\",\"dist_code\":\"07\",\"subdiv_code\":\"" + subdivCode + "\",\"cir_code\":\"" + circleCode + "\",\"mouza_pargona_code\":\"" + mouzaCode + "\"}";
 
-        System.out.println(requestPayload);
+        //System.out.println(requestPayload);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -171,7 +171,7 @@ public class ProxyController {
         try {
             ResponseEntity<String> response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
 
-            System.out.println("Response: " + response);
+            //System.out.println("Response: " + response);
 
             if (response.getStatusCode() == HttpStatus.OK) {
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -180,7 +180,7 @@ public class ProxyController {
                 JsonNode dataNode = rootNode.path("data");
 
                 if (dataNode.isArray() && dataNode.size() > 0) {
-                    System.out.println("Data found: " + dataNode);
+                    //System.out.println("Data found: " + dataNode);
                     return dataNode;
                 } else {
                     System.out.println("No data found in the 'data' field.");
@@ -202,11 +202,11 @@ public class ProxyController {
     public JsonNode getVillages(@RequestParam String subdivCode, @RequestParam String circleCode, @RequestParam String mouzaCode, @RequestParam String lotNo) {
         String API_URL = "https://landhub.assam.gov.in/apidemo/index.php/NicApi/getVillages";
 
-        System.out.println("INSIDE PROXY");
+        //System.out.println("INSIDE PROXY");
 
         String requestPayload = "{\"apikey\":\"bhunaksha\",\"dist_code\":\"07\",\"subdiv_code\":\"" + subdivCode + "\",\"cir_code\":\"" + circleCode + "\",\"mouza_pargona_code\":\"" + mouzaCode + "\", \"lot_no\":\"" + lotNo + "\"}";
 
-        System.out.println(requestPayload);
+        //System.out.println(requestPayload);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -216,7 +216,7 @@ public class ProxyController {
         try {
             ResponseEntity<String> response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
 
-            System.out.println("Response: " + response);
+            //System.out.println("Response: " + response);
 
             if (response.getStatusCode() == HttpStatus.OK) {
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -225,7 +225,7 @@ public class ProxyController {
                 JsonNode dataNode = rootNode.path("data");
 
                 if (dataNode.isArray() && dataNode.size() > 0) {
-                    System.out.println("Data found: " + dataNode);
+                    //System.out.println("Data found: " + dataNode);
                     return dataNode;
                 } else {
                     System.out.println("No data found in the 'data' field.");
@@ -247,11 +247,11 @@ public class ProxyController {
     public JsonNode getDags(@RequestParam String subdivCode, @RequestParam String circleCode, @RequestParam String mouzaCode, @RequestParam String lotNo, @RequestParam String villageNo) {
         String API_URL = "https://landhub.assam.gov.in/apidemo/index.php/NicApi/getDags";
 
-        System.out.println("INSIDE PROXY");
+        //System.out.println("INSIDE PROXY");
 
         String requestPayload = "{\"apikey\":\"bhunaksha\",\"dist_code\":\"07\",\"subdiv_code\":\"" + subdivCode + "\",\"cir_code\":\"" + circleCode + "\",\"mouza_pargona_code\":\"" + mouzaCode + "\", \"lot_no\":\"" + lotNo + "\", \"vill_code\":\"" + villageNo + "\"}";
 
-        System.out.println(requestPayload);
+        //System.out.println(requestPayload);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -261,7 +261,7 @@ public class ProxyController {
         try {
             ResponseEntity<String> response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
 
-            System.out.println("Response: " + response);
+            //System.out.println("Response: " + response);
 
             if (response.getStatusCode() == HttpStatus.OK) {
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -270,7 +270,7 @@ public class ProxyController {
                 JsonNode dataNode = rootNode.path("data");
 
                 if (dataNode.isArray() && dataNode.size() > 0) {
-                    System.out.println("Data found: " + dataNode);
+                    //System.out.println("Data found: " + dataNode);
                     return dataNode;
                 } else {
                     System.out.println("No data found in the 'data' field.");
@@ -297,7 +297,7 @@ public class ProxyController {
                             @RequestParam String dagNo) {
         String API_URL = "https://landhub.assam.gov.in/apidemo/index.php/NicApi/pattadarInformation";
 
-        System.out.println("INSIDE PROXY");
+        //System.out.println("INSIDE PROXY");
 
         // Prepare URL-encoded form data
         LinkedMultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
@@ -310,7 +310,7 @@ public class ProxyController {
         formData.add("vill_townprt_code", villageNo);
         formData.add("dag_no", dagNo);
 
-        System.out.println("Form Data: " + formData);
+        //System.out.println("Form Data: " + formData);
 
         // Set headers for form data
         HttpHeaders headers = new HttpHeaders();
@@ -322,7 +322,7 @@ public class ProxyController {
         try {
             ResponseEntity<String> response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
 
-            System.out.println("Response: " + response);
+            //System.out.println("Response: " + response);
 
             if (response.getStatusCode() == HttpStatus.OK) {
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -331,7 +331,7 @@ public class ProxyController {
                 JsonNode dataNode = rootNode.path("Pattadar_names");
 
                 if (dataNode.isArray() && dataNode.size() > 0) {
-                    System.out.println("Data found: " + dataNode);
+                    //System.out.println("Data found: " + dataNode);
                     return dataNode;
                 } else {
                     System.out.println("No data found in the 'data' field.");
