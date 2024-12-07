@@ -63,7 +63,13 @@ public class SecureHomeController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         AppUser user = userService.findByEmail(username);
-        List<AppUser> userList = userService.getAllUsers();
+
+        List<AppUser> userList = new ArrayList<>();
+        if(user.getRole() == UserRole.SUPERVISOR){
+            userList = userService.getAllSurveyors();
+        }else{
+            userList = userService.getAllUsers();
+        }
         model.addAttribute("user", user);
         model.addAttribute("userList", userList);
         return "/pages/secure/userlist";
