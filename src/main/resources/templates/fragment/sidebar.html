@@ -70,13 +70,13 @@
                         href="/secure/home"
                         class="menu-link">
                     <i class="menu-icon bx bx-home-smile"></i>
-                    <div class="text-truncate" data-i18n="Dashboards">Dashboard</div>
+                    <div class="text-truncate" data-i18n="Dashboards">Home</div>
                 </a>
             </li>
 
 
             <!-- Layouts -->
-            <li class="menu-item">
+            <li th:if="${#strings.trim(user.role) == 'SUPER_ADMIN'}" class="menu-item">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-layout"></i>
                     <div class="text-truncate" data-i18n="Layouts">Team Management</div>
@@ -98,11 +98,31 @@
                             <div class="text-truncate" data-i18n="Without navbar">View Users</div>
                         </a>
                     </li>
-                    <!--                        <li class="menu-item">-->
-                    <!--                            <a href="/secure/getLocation" class="menu-link">-->
-                    <!--                                <div class="text-truncate" data-i18n="Without navbar">Pattadar Info</div>-->
-                    <!--                            </a>-->
-                    <!--                        </li>-->
+                </ul>
+            </li>
+
+            <li th:if="${#strings.trim(user.role) == 'SUPERVISOR'}" class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-layout"></i>
+                    <div class="text-truncate" data-i18n="Layouts">Team Management</div>
+                </a>
+
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="/secure/teamCreation" class="menu-link">
+                            <div class="text-truncate" data-i18n="Without menu">Assign Surveyors</div>
+                        </a>
+                    </li>
+<!--                    <li class="menu-item">-->
+<!--                        <a href="/secure/createuser" class="menu-link">-->
+<!--                            <div class="text-truncate" data-i18n="Without navbar">Create User</div>-->
+<!--                        </a>-->
+<!--                    </li>-->
+                    <li class="menu-item">
+                        <a href="/secure/userlist" class="menu-link">
+                            <div class="text-truncate" data-i18n="Without navbar">View Surveyors</div>
+                        </a>
+                    </li>
                 </ul>
             </li>
 

@@ -31,14 +31,8 @@ public class SecureHomeController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         AppUser user = userService.findByEmail(username);
+        System.out.println("user" + user);
         List<Team> teams = new ArrayList<>();
-//        if (user.getRole().equals("SUPERVISOR")) {
-//            teams = teamService.getAllTeamsForSupervisor(user);
-//        }else if (user.getRole().equals("SURVEYOR")) {
-//            // Code to execute if the user is a supervisor
-//        }else {
-//            teams = teamService.getAllTeams();
-//        }
 
         if (user.getRole() == UserRole.SUPERVISOR) {
             teams = teamService.getAllTeamsForSupervisor(user);
