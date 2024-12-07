@@ -15,4 +15,5 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
     @Query(value = "SELECT * FROM app_user t WHERE t.surveyors = :teamId", nativeQuery = true)
     List<AppUser> findTeamWithSurveyors(@Param("teamId") Team teamId);
 
+    List<Team> findAllBySupervisor(AppUser userId);
 }

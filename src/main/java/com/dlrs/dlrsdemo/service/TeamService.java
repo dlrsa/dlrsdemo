@@ -117,4 +117,19 @@ public class TeamService {
 
         return response;
     }
+
+    public List<Team> getAllTeamsForSupervisor(AppUser user) {
+        return teamRepo.findAllBySupervisor(user);
+    }
+
+    public List<Team> getAllTeamsForSurveyor(AppUser user) {
+        List<Team> tm = teamRepo.findAll();
+        List<Team> surveyorTeam = new ArrayList<>();
+        for(Team team : tm){
+            if(team.getSurveyors().contains(user)){
+                surveyorTeam.add(team);
+            }
+        }
+        return surveyorTeam;
+    }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -30,7 +31,23 @@ public class SecureHomeController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         AppUser user = userService.findByEmail(username);
-        List<Team> teams = teamService.getAllTeams();
+        List<Team> teams = new ArrayList<>();
+//        if (user.getRole().equals("SUPERVISOR")) {
+//            teams = teamService.getAllTeamsForSupervisor(user);
+//        }else if (user.getRole().equals("SURVEYOR")) {
+//            // Code to execute if the user is a supervisor
+//        }else {
+//            teams = teamService.getAllTeams();
+//        }
+
+        if (user.getRole() == UserRole.SUPERVISOR) {
+            teams = teamService.getAllTeamsForSupervisor(user);
+        } else if (user.getRole() == UserRole.SURVEYOR) {
+            teams = teamService.getAllTeamsForSurveyor(user);
+        } else {
+            teams = teamService.getAllTeams();
+        }
+
 
         model.addAttribute("user", user);
         model.addAttribute("teams", teams);
