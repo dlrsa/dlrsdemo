@@ -127,12 +127,12 @@
                                 </thead>
                                 <tbody class="table-border-bottom-0">
                                 <!-- Iterate through userList -->
-                                <tr th:each="user : ${userList}">
-                                    <td th:text="${user.name}"></td>
-                                    <td th:text="${user.email}"></td>
-                                    <td th:text="${user.phone}"></td>
+                                <tr th:each="userD : ${userList}">
+                                    <td th:text="${userD.name}"></td>
+                                    <td th:text="${userD.email}"></td>
+                                    <td th:text="${userD.phone}"></td>
                                     <td>
-                                        <span th:text="${user.role}"></span>
+                                        <span th:text="${userD.role}"></span>
                                     </td>
                                     <td>
                                         <div class="dropdown">
@@ -140,12 +140,13 @@
                                                     data-bs-toggle="dropdown">
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item delete-btn"
-                                                   >
-                                                    <i class="bx bx-trash me-2"></i> Delete
-                                                </a>
-                                                <input type="text" id="userid" th:value = "${user.userId}" />
+                                            <div class="dropdown">
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item delete-btn">
+                                                        <i class="bx bx-trash me-2"></i> Delete
+                                                    </a>
+                                                    <input type="hidden" class="userid" th:value="${userD.userId}"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>

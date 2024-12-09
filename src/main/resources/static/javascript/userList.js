@@ -1,8 +1,9 @@
 $(document).ready(function () {
     $(document).on('click', '.delete-btn', function () {
-        alert("Here");
 //        var userId = $(this).data('id');
-        var userId = $("#userid").val();
+        var userId = $(this).closest('.dropdown-menu').find('.userid').val();
+
+        alert(userId);
 
         console.log("user Id" + userId);
         if (confirm("Are you sure you want to delete this user?")) {
@@ -17,17 +18,8 @@ $(document).ready(function () {
                         userId: userId
                   },
                 success: function (response) {
-                    if (response.toString() === "success") {
-                        alert("User deleted successfully!");
-                        location.reload();
-                       } else if (response.toString() === "conflict") {
-                                               alert("Unable to delete! 😘 User already in team");
-                                               location.reload();
-                                           }
-                    } else {
-                        alert("Unable to delete User!");
-                        location.reload();
-                    }
+                    alert(response);
+                    location.reload();
                 },
                 error: function () {
                     alert("Failed to delete the user.");
