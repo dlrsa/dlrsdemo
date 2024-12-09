@@ -122,9 +122,10 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/secure/deleteUser")
+    @DeleteMapping("/secure/deleteUser")
     @ResponseBody
     public String deleteUser(@RequestParam Long userId){
+        System.out.println(userId);
         String res = userService.deleteUser(userId);
         return res;
     }
