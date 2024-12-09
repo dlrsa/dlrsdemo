@@ -4,6 +4,7 @@ import com.dlrs.dlrsdemo.common.UserRole;
 import com.dlrs.dlrsdemo.model.AppUser;
 import com.dlrs.dlrsdemo.model.Team;
 import com.dlrs.dlrsdemo.repository.AppUserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,4 +32,14 @@ public class AppUserService {
 
     }
 
+    public String deleteUser(Long userId) {
+        String res = "";
+        userRepository.deleteById(userId);
+        if(userRepository.existsById(userId)){
+            res = "failed";
+        }else{
+            res = "success";
+        }
+        return res;
+    }
 }
