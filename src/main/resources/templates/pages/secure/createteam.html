@@ -86,19 +86,19 @@
 
 
                     <ul class="nav nav-pills flex-row align-items-center ms-auto" role="tablist">
-                        <li class="nav-item">
-                            <button
-                                    type="button"
-                                    class="nav-link active"
-                                    role="tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#navs-tabs-line-card-income"
-                                    aria-controls="navs-tabs-line-card-income"
-                                    aria-selected="true">
-                                <span th:text="${user.name}"></span><span> &nbsp ( </span><span th:text="${user.role}"></span><span>)</span>
-                            </button>
+                        <li class="nav-item d-flex align-items-center">
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2 text-end">
+                                    <h6 class="mb-0">
+                                        <span th:text="${user.name}"></span>
+                                    </h6>
+                                    <small><span th:text="${user.role}"></span></small>
+                                </div>
+                            </div>
+                            <div class="avatar flex-shrink-0 me-3">
+                                <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-user"></i></span>
+                            </div>
                         </li>
-
                     </ul>
                 </div>
             </nav>

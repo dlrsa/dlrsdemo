@@ -86,21 +86,21 @@
 
 
                     <ul class="nav nav-pills flex-row align-items-center ms-auto" role="tablist">
-                        <li class="nav-item">
-                            <button
-                                    type="button"
-                                    class="nav-link active"
-                                    role="tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#navs-tabs-line-card-income"
-                                    aria-controls="navs-tabs-line-card-income"
-                                    aria-selected="true">
-                                <span th:text="${user.name}"></span><span> &nbsp ( </span><span
-                                    th:text="${user.role}"></span><span>)</span>
-                            </button>
+                        <li class="nav-item d-flex align-items-center">
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2 text-end">
+                                    <h6 class="mb-0">
+                                        <span th:text="${user.name}"></span>
+                                    </h6>
+                                    <small><span th:text="${user.role}"></span></small>
+                                </div>
+                            </div>
+                            <div class="avatar flex-shrink-0 me-3">
+                                <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-user"></i></span>
+                            </div>
                         </li>
-
                     </ul>
+
                 </div>
             </nav>
 
@@ -127,7 +127,7 @@
                                                     <img
                                                             src="/common/sneat_template/assets/img/icons/unicons/teams.png"
                                                             alt="chart success"
-                                                            class="rounded" />
+                                                            class="rounded"/>
                                                 </div>
                                                 <div class="dropdown">
                                                     <button
@@ -139,8 +139,10 @@
                                                             aria-expanded="false">
                                                         <i class="bx bx-dots-vertical-rounded text-muted"></i>
                                                     </button>
-                                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                                        <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                         aria-labelledby="cardOpt3">
+                                                        <a class="dropdown-item" href="javascript:void(0);">View
+                                                            More</a>
                                                         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                                     </div>
                                                 </div>
@@ -159,7 +161,7 @@
                                                     <img
                                                             src="/common/sneat_template/assets/img/icons/unicons/user.png"
                                                             alt="chart success"
-                                                            class="rounded" />
+                                                            class="rounded"/>
                                                 </div>
                                                 <div class="dropdown">
                                                     <button
@@ -171,8 +173,10 @@
                                                             aria-expanded="false">
                                                         <i class="bx bx-dots-vertical-rounded text-muted"></i>
                                                     </button>
-                                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                                        <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                         aria-labelledby="cardOpt3">
+                                                        <a class="dropdown-item" href="javascript:void(0);">View
+                                                            More</a>
                                                         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                                     </div>
                                                 </div>
@@ -191,7 +195,7 @@
                                                     <img
                                                             src="/common/sneat_template/assets/img/icons/unicons/account.png"
                                                             alt="wallet info"
-                                                            class="rounded" />
+                                                            class="rounded"/>
                                                 </div>
                                                 <div class="dropdown">
                                                     <button
@@ -203,15 +207,18 @@
                                                             aria-expanded="false">
                                                         <i class="bx bx-dots-vertical-rounded text-muted"></i>
                                                     </button>
-                                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                                                        <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                         aria-labelledby="cardOpt6">
+                                                        <a class="dropdown-item" href="javascript:void(0);">View
+                                                            More</a>
                                                         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                                     </div>
                                                 </div>
                                             </div>
                                             <p class="mb-1">Total Surveyors</p>
                                             <h4 class="card-title mb-3"><span th:text="${survCount}"></span></h4>
-                                            <small class="text-success fw-medium"><i class="bx bx-people"></i>Total Registered Surveyors</small>
+                                            <small class="text-success fw-medium"><i class="bx bx-people"></i>Total
+                                                Registered Surveyors</small>
                                         </div>
                                     </div>
                                 </div>
@@ -220,21 +227,27 @@
                             </div>
                         </div>
 
-                        <div th:if="${#strings.trim(user.role) == 'SURVEYOR' and team != null}" class="col-lg-12 col-md-4 order-1">
+                        <div th:if="${#strings.trim(user.role) == 'SURVEYOR' and team != null}"
+                             class="col-lg-12 col-md-4 order-1">
                             <div class="row">
                                 <div class="col-lg-4 col-md-12 col-6 mb-6">
                                     <div class="card h-100">
                                         <div class="card-body">
                                             <div class="card-title d-flex align-items-start justify-content-between mb-4">
                                                 <div class="avatar flex-shrink-0">
-                                                    <img src="/common/sneat_template/assets/img/icons/unicons/teams.png" alt="chart success" class="rounded" />
+                                                    <img src="/common/sneat_template/assets/img/icons/unicons/teams.png"
+                                                         alt="chart success" class="rounded"/>
                                                 </div>
                                                 <div class="dropdown">
-                                                    <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <button class="btn p-0" type="button" id="cardOpt3"
+                                                            data-bs-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
                                                         <i class="bx bx-dots-vertical-rounded text-muted"></i>
                                                     </button>
-                                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                                        <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                         aria-labelledby="cardOpt3">
+                                                        <a class="dropdown-item" href="javascript:void(0);">View
+                                                            More</a>
                                                         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                                     </div>
                                                 </div>
@@ -252,14 +265,19 @@
                                         <div class="card-body">
                                             <div class="card-title d-flex align-items-start justify-content-between mb-4">
                                                 <div class="avatar flex-shrink-0">
-                                                    <img src="/common/sneat_template/assets/img/icons/unicons/user.png" alt="chart success" class="rounded" />
+                                                    <img src="/common/sneat_template/assets/img/icons/unicons/user.png"
+                                                         alt="chart success" class="rounded"/>
                                                 </div>
                                                 <div class="dropdown">
-                                                    <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <button class="btn p-0" type="button" id="cardOpt3"
+                                                            data-bs-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
                                                         <i class="bx bx-dots-vertical-rounded text-muted"></i>
                                                     </button>
-                                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                                        <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                         aria-labelledby="cardOpt3">
+                                                        <a class="dropdown-item" href="javascript:void(0);">View
+                                                            More</a>
                                                         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                                     </div>
                                                 </div>
@@ -277,14 +295,19 @@
                                         <div class="card-body">
                                             <div class="card-title d-flex align-items-start justify-content-between mb-4">
                                                 <div class="avatar flex-shrink-0">
-                                                    <img src="/common/sneat_template/assets/img/icons/unicons/account.png" alt="wallet info" class="rounded" />
+                                                    <img src="/common/sneat_template/assets/img/icons/unicons/account.png"
+                                                         alt="wallet info" class="rounded"/>
                                                 </div>
                                                 <div class="dropdown">
-                                                    <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <button class="btn p-0" type="button" id="cardOpt6"
+                                                            data-bs-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
                                                         <i class="bx bx-dots-vertical-rounded text-muted"></i>
                                                     </button>
-                                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                                                        <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                         aria-labelledby="cardOpt6">
+                                                        <a class="dropdown-item" href="javascript:void(0);">View
+                                                            More</a>
                                                         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                                     </div>
                                                 </div>
@@ -293,32 +316,34 @@
                                             <h4 class="card-title mb-3">
                                                 <span th:text="${team.surveyors.size()}">0</span>
                                             </h4>
-                                            <small class="text-success fw-medium"><i class="bx bx-people"></i>Total Surveyors in The Team</small>
+                                            <small class="text-success fw-medium"><i class="bx bx-people"></i>Total
+                                                Surveyors in The Team</small>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div th:if="${#strings.trim(user.role) == 'SURVEYOR' and team == null}" class="col-lg-12 col-md-12">
+                        <div th:if="${#strings.trim(user.role) == 'SURVEYOR' and team == null}"
+                             class="col-lg-12 col-md-12">
                             <div class="card h-100 p-8">
                                 <div class="d-flex flex-column align-items-center">
                                     <img
                                             src="/common/sneat_template/assets/img/icons/unicons/alert.png"
                                             alt="No Team Assigned"
                                             class="img-fluid mb-3"
-                                            style="max-width: 150px;" />
+                                            style="max-width: 150px;"/>
                                     <h4 class="mb-2">Hello, <span th:text="${user.name}"></span>!</h4>
                                     <p class="mb-3">
                                         You are currently not assigned to any team. Once a team is assigned to you,
                                         the team dashboard and related details will be available here. Stay tuned!
                                     </p>
-                                    <a href="https://dlrs.assam.gov.in/contact-us" target="_blank" class="btn btn-primary btn-lg my-8 px-8">
+                                    <a href="https://dlrs.assam.gov.in/contact-us" target="_blank"
+                                       class="btn btn-primary btn-lg my-8 px-8">
                                         Learn More
                                     </a>
                                 </div>
                             </div>
                         </div>
-
 
 
                         <!--/ Expense Overview -->

@@ -86,20 +86,19 @@
 
 
                     <ul class="nav nav-pills flex-row align-items-center ms-auto" role="tablist">
-                        <li class="nav-item">
-                            <button
-                                    type="button"
-                                    class="nav-link active"
-                                    role="tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#navs-tabs-line-card-income"
-                                    aria-controls="navs-tabs-line-card-income"
-                                    aria-selected="true">
-                                <span th:text="${user.name}"></span><span> &nbsp ( </span><span
-                                    th:text="${user.role}"></span><span>)</span>
-                            </button>
+                        <li class="nav-item d-flex align-items-center">
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2 text-end">
+                                    <h6 class="mb-0">
+                                        <span th:text="${user.name}"></span>
+                                    </h6>
+                                    <small><span th:text="${user.role}"></span></small>
+                                </div>
+                            </div>
+                            <div class="avatar flex-shrink-0 me-3">
+                                <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-user"></i></span>
+                            </div>
                         </li>
-
                     </ul>
                 </div>
             </nav>
@@ -132,26 +131,26 @@
                                     <td th:text="${userD.email}"></td>
                                     <td th:text="${userD.phone}"></td>
                                     <td>
-                                        <span th:text="${userD.role}"></span>
+                                        <span th:if="${#strings.trim(userD.role) == 'SUPER_ADMIN'}" class="badge bg-label-primary me-1" th:text="${userD.role}">SUPER_ADMIN</span>
+                                        <span th:if="${#strings.trim(userD.role) == 'SUPERVISOR'}" class="badge bg-label-success me-1" th:text="${userD.role}">SUPERVISOR</span>
+                                        <span th:if="${#strings.trim(userD.role) == 'SURVEYOR'}" class="badge bg-label-warning me-1" th:text="${userD.role}">SURVEYOR</span>
                                     </td>
                                     <td>
                                         <div class="dropdown">
-                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
-                                            <div class="dropdown">
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item delete-btn">
-                                                        <i class="bx bx-trash me-2"></i> Delete
-                                                    </a>
-                                                    <input type="hidden" class="userid" th:value="${userD.userId}"/>
-                                                </div>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item delete-btn">
+                                                    <i class="bx bx-trash me-2"></i> Delete
+                                                </a>
+                                                <input type="hidden" class="userid" th:value="${userD.userId}"/>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                                 </tbody>
+
                             </table>
                         </div>
                     </div>

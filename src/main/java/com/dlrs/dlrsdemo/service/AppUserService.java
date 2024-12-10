@@ -95,6 +95,7 @@ public class AppUserService {
 
     public Team getSurveyorTeam(AppUser user) {
         Team team1 = new Team();
+        team1 = null;
         List<Team> teamList = teamRepository.findAll();
         for (Team team : teamList){
             if(team.getSurveyors().contains(user)){

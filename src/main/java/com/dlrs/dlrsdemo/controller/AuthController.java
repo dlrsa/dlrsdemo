@@ -2,11 +2,14 @@ package com.dlrs.dlrsdemo.controller;
 
 import com.dlrs.dlrsdemo.dto.UserLoginDto;
 import com.dlrs.dlrsdemo.model.AppUser;
+import com.dlrs.dlrsdemo.model.Team;
+import com.dlrs.dlrsdemo.repository.AppUserRepository;
 import com.dlrs.dlrsdemo.service.AppUserService;
 import com.dlrs.dlrsdemo.service.AuthService;
 import com.dlrs.dlrsdemo.service.CustomUserDetailsServiceImpl;
 import com.dlrs.dlrsdemo.util.JwtUtil;
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,6 +38,8 @@ public class AuthController {
 
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private AppUserRepository appUserRepository;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody AppUser userData){
@@ -125,8 +130,16 @@ public class AuthController {
     @DeleteMapping("/secure/deleteUser")
     @ResponseBody
     public String deleteUser(@RequestParam Long userId){
+        String res = "initiated";
         System.out.println(userId);
-        String res = userService.deleteUser(userId);
+        AppUser user = appUserRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+        Team team = userService.getSurveyorTeam(user);
+        if(team == null){
+            appUserRepository.delete(user);
+            res = "Surveyor Deleted Successfully";
+        }else{
+            res = "Unable to delete the Surveyor! Surveyor is already associated with a team.";
+        }
         return res;
     }
 }
