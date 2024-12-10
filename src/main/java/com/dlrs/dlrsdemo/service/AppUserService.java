@@ -100,6 +100,8 @@ public class AppUserService {
             if(team.getSurveyors().contains(user)){
                 team1 = teamRepository.findById(team.getTeamId()).orElseThrow(() -> new EntityNotFoundException("Team Not Found"));
                 break;
+            }else {
+                team1 = null;
             }
         }
         return team1;
