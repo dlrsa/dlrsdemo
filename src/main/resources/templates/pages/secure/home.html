@@ -323,7 +323,7 @@
 
                         <!--/ Expense Overview -->
                         <!-- Transactions -->
-                        <div th:if="${#strings.trim(user.role) == 'SURVEYOR' and team != null}" class="col-md-12 col-lg-12 order-2 mb-6">
+                        <div th:if="${team != null}" class="col-md-12 col-lg-12 order-2 mb-6">
                             <div class="card h-100">
                                 <div class="card-header d-flex align-items-center justify-content-between">
                                     <h5 class="card-title m-0 me-2">Teams</h5>
