@@ -22,7 +22,7 @@ $(document).ready(function () {
                     location.reload();
                 },
                 error: function () {
-                    alert("Failed to delete the user.");
+                    alert("Failed to delete the user");
                 }
             });
         } else {

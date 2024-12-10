@@ -6,6 +6,7 @@ import com.dlrs.dlrsdemo.model.Team;
 import com.dlrs.dlrsdemo.service.AppUserService;
 import com.dlrs.dlrsdemo.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -32,19 +33,31 @@ public class SecureHomeController {
         String username = authentication.getName();
         AppUser user = userService.findByEmail(username);
         System.out.println("user" + user);
+        List<AppUser> superList = userService.getAllSupervisors();
+        List<AppUser> survList = userService.getAllSurveyors();
         List<Team> teams = new ArrayList<>();
+        Team team = new Team();
 
         if (user.getRole() == UserRole.SUPERVISOR) {
             teams = teamService.getAllTeamsForSupervisor(user);
+            survList = userService.getOwnSurveyors(user);
         } else if (user.getRole() == UserRole.SURVEYOR) {
             teams = teamService.getAllTeamsForSurveyor(user);
+            team = userService.getSurveyorTeam(user);
         } else {
             teams = teamService.getAllTeams();
         }
 
+        System.out.println("Surv Team" + team);
+
 
         model.addAttribute("user", user);
         model.addAttribute("teams", teams);
+        model.addAttribute("superCount", superList.size());
+        model.addAttribute("survCount", survList.size());
+        model.addAttribute("team", team);
+
+
         return "/pages/secure/home";
     }
 
@@ -64,17 +77,20 @@ public class SecureHomeController {
         String username = authentication.getName();
         AppUser user = userService.findByEmail(username);
 
+
         List<AppUser> userList = new ArrayList<>();
         if(user.getRole() == UserRole.SUPERVISOR){
-            userList = userService.getAllSurveyors();
+            userList = userService.getOwnSurveyors(user);
         }else{
             userList = userService.getAllUsers();
         }
+
         model.addAttribute("user", user);
         model.addAttribute("userList", userList);
         return "/pages/secure/userlist";
     }
 
+    @PreAuthorize("hasAnyAuthority('super_admin')")
     @GetMapping("/teamCreation")
     public String teamCreation(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -106,8 +122,5 @@ public class SecureHomeController {
         model.addAttribute("selectedSurveyors", selectedSurveyors);
         return "/pages/secure/teamdetails";
     }
-
-
-
 
 }

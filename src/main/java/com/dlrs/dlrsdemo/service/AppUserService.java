@@ -7,6 +7,7 @@ import com.dlrs.dlrsdemo.repository.AppUserRepository;
 import com.dlrs.dlrsdemo.repository.TeamRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,9 +38,11 @@ public class AppUserService {
 
     }
 
+
+    @PreAuthorize("hasAuthority('super_admin')")
     public String deleteUser(Long userId) {
         String res = "";
-        boolean isExist = false;
+        boolean isExist = true;
         List<Team> teamsList = new ArrayList<>();
         AppUser userData = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User Not found!"));
         if(userData.getRole() == UserRole.SUPER_ADMIN){
@@ -59,20 +62,46 @@ public class AppUserService {
         }else{
             teamsList = teamRepository.findAll();
             for (Team team : teamsList){
-                if(!team.getSurveyors().contains(userData) || !team.getSupervisor().equals(userData)){
+                if(team.getSurveyors().contains(userData)){
+                    res = "Unable to delete! This user associated with a team";
+                    break;
+                }else{
                     userRepository.deleteById(userId);
+                    if(team.getSurveyors().isEmpty()){
+                        teamRepository.delete(team);
+                    }
                     if(userRepository.existsById(userId)){
                         res = "Unable to delete the user";
                     }else{
                         res = "Successfully deleted the user";
                     }
-                }else{
-                    res = "Unable to delete! This user associated with a team";
+
                 }
             }
 
         }
 
         return res;
+    }
+
+    public List<AppUser> getOwnSurveyors(AppUser user) {
+        List<Team> teams = teamRepository.findAllBySupervisor(user);
+        List<AppUser> surveyorsList = new ArrayList<>();
+        for (Team team : teams){
+           surveyorsList.addAll(team.getSurveyors());
+        }
+        return surveyorsList;
+    }
+
+    public Team getSurveyorTeam(AppUser user) {
+        Team team1 = new Team();
+        List<Team> teamList = teamRepository.findAll();
+        for (Team team : teamList){
+            if(team.getSurveyors().contains(user)){
+                team1 = teamRepository.findById(team.getTeamId()).orElseThrow(() -> new EntityNotFoundException("Team Not Found"));
+                break;
+            }
+        }
+        return team1;
     }
 }

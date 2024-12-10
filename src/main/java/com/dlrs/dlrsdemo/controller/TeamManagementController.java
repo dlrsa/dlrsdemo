@@ -6,6 +6,7 @@ import com.dlrs.dlrsdemo.service.TeamService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class TeamManagementController {
         return teamService.createNewTeam(teamName, supervisorId, surveyors);
     }
 
+    @PreAuthorize("hasAnyAuthority('super_admin', 'surveyor')")
     @PostMapping("/updateTeam")
     @ResponseBody
     public String teamUpdatation(@RequestParam("teamCode") Long teamCode,
