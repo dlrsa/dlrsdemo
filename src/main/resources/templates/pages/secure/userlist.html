@@ -49,6 +49,7 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="/common/sneat_template/assets/js/config.js"></script>
+
 </head>
 
 <body>
@@ -113,7 +114,7 @@
                     <!-- Basic Bootstrap Table -->
                     <div class="card">
                         <h5 class="card-header">Registered User's List</h5>
-                        <div class="table-responsive text-nowrap">
+                        <div th:if="${userList != null or not #arrays.isEmpty(userList)}" class="table-responsive text-nowrap">
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -127,6 +128,7 @@
                                 <tbody class="table-border-bottom-0">
                                 <!-- Iterate through userList -->
                                 <tr th:each="userD : ${userList}">
+
                                     <td th:text="${userD.name}"></td>
                                     <td th:text="${userD.email}"></td>
                                     <td th:text="${userD.phone}"></td>
@@ -141,9 +143,13 @@
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
                                             <div class="dropdown-menu">
+                                                <a class="dropdown-item details-btn">
+                                                    <i class="bx bx-user me-2"></i> Details
+                                                </a>
                                                 <a class="dropdown-item delete-btn">
                                                     <i class="bx bx-trash me-2"></i> Delete
                                                 </a>
+
                                                 <input type="hidden" class="userid" th:value="${userD.userId}"/>
                                             </div>
                                         </div>
@@ -152,6 +158,11 @@
                                 </tbody>
 
                             </table>
+                        </div>
+                        <div th:if="${userList == null or #arrays.isEmpty(userList)}" class="table-responsive text-nowrap">
+                            <p class="mb-3 text-center py-8">
+                                User not available!
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -185,6 +196,12 @@
 
 <!-- Main JS -->
 <script src="/common/sneat_template/assets/js/main.js"></script>
+<!-- Add jQuery Confirm CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+
+<!-- Add jQuery Confirm JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
 
 <!-- Page JS -->
 

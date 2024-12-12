@@ -1,0 +1,264 @@
+<!doctype html>
+
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-compact"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/common/sneat_template/assets/"
+        data-template="vertical-menu-template-free"
+        data-style="light"
+        xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+
+    <title>DLRS | User Details</title>
+
+    <meta name="description" content=""/>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/common/sneat_template/assets/img/favicon/favicon.ico"/>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"/>
+
+    <link rel="stylesheet" href="/common/sneat_template/assets/vendor/fonts/boxicons.css"/>
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/common/sneat_template/assets/vendor/css/core.css"
+          class="template-customizer-core-css"/>
+    <link rel="stylesheet" href="/common/sneat_template/assets/vendor/css/theme-default.css"
+          class="template-customizer-theme-css"/>
+    <link rel="stylesheet" href="/common/sneat_template/assets/css/demo.css"/>
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/common/sneat_template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
+
+    <!-- Page CSS -->
+
+    <!-- Helpers -->
+    <script src="/common/sneat_template/assets/vendor/js/helpers.js"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/common/sneat_template/assets/js/config.js"></script>
+</head>
+
+<body>
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <!-- Menu -->
+        <div th:replace="~{fragment/sidebar :: sidebar}"></div>
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+            <!-- Navbar -->
+
+            <div th:replace="~{fragment/navbar :: navbar}"></div>
+
+            <!-- / Navbar -->
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <!-- Content -->
+
+                <div class="container-xxl flex-grow-1 container-p-y">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="nav-align-top">
+                                <ul class="nav nav-pills flex-column flex-md-row mb-6">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="javascript:void(0);"
+                                        ><i class="bx bx-sm bx-user me-1_5"></i> User Details</a
+                                        >
+                                </ul>
+                            </div>
+                            <div class="card mb-6">
+                                <!-- Account -->
+                                <div class="card-body pt-4">
+                                    <form id="formAccountSettings" method="POST" onsubmit="return false">
+                                        <div class="row g-6">
+                                            <div class="col-md-6">
+                                                <label for="firstName" class="form-label">Name</label>
+                                                <input
+                                                        class="form-control"
+                                                        type="text"
+                                                        id="firstName"
+                                                        name="firstName"
+                                                        th:value="${userData.name}"
+                                                        autofocus/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="email" class="form-label">E-mail</label>
+                                                <input
+                                                        class="form-control"
+                                                        type="text"
+                                                        id="email"
+                                                        name="email"
+                                                        th:value="${userData.email}"
+                                                        placeholder="john.doe@example.com"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="phoneNumber">Phone Number</label>
+                                                <div class="input-group input-group-merge">
+                                                    <span class="input-group-text">IND (+91)</span>
+                                                    <input
+                                                            type="text"
+                                                            id="phoneNumber"
+                                                            name="phoneNumber"
+                                                            class="form-control"
+                                                            th:value="${userData.phone}"
+                                                            placeholder="202 555 0111"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="organization" class="form-label">Role</label>
+                                                <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="organization"
+                                                        name="organization"
+                                                        th:value="${userData.role}"
+                                                        disabled/>
+                                            </div>
+                                            <div class="mt-6">
+                                                <button type="submit" class="btn btn-primary me-3">Save changes</button>
+                                                <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /Account -->
+                            </div>
+
+
+                            <div th:if="${teams != null and not #arrays.isEmpty(teams)}" class="col-md-12 col-lg-12 order-2 mb-6">
+                                <div class="card h-100">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h5 class="card-title m-0 me-2">Teams</h5>
+                                    </div>
+                                    <div class="card-body pt-4">
+                                        <ul class="p-0 m-0">
+                                            <!-- Loop through the list of teams -->
+                                            <th:block th:each="team : ${teams}">
+                                                <li class="d-flex align-items-center mb-6">
+                                                    <div class="avatar flex-shrink-0 me-3">
+                                                        <img src="/common/sneat_template/assets/img/icons/unicons/teams.png"
+                                                             alt="User" class="rounded"/>
+                                                    </div>
+                                                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                                        <div class="me-2">
+                                                            <small class="d-block">Team Name</small>
+                                                            <h6 class="fw-normal mb-0" th:text="${team.teamName}">Team
+                                                                Name</h6> <!-- Display team name -->
+                                                        </div>
+                                                        <div class="me-2">
+                                                            <small class="d-block">Supervisor : </small>
+                                                            <h6 class="fw-normal mb-0" th:text="${team.supervisor.name}">
+                                                                Supervisor Name</h6> <!-- Display team name -->
+                                                        </div>
+                                                        <div class="user-progress d-flex align-items-center gap-2">
+                                                            <ul class="nav nav-pills flex-row align-items-center ms-auto"
+                                                                role="tablist">
+                                                                <li class="nav-item">
+                                                                    <button
+                                                                            type="button"
+                                                                            class="nav-link active team-button"
+                                                                            role="tab"
+                                                                            data-bs-toggle="tab"
+                                                                            data-bs-target="#navs-tabs-line-card-income"
+                                                                            aria-controls="navs-tabs-line-card-income"
+                                                                            aria-selected="true">
+                                                                        View
+                                                                        <input type="hidden" class="teamcode"
+                                                                               th:value="${team.teamId}"/>
+                                                                    </button>
+
+
+                                                                </li>
+
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </th:block>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div th:if="${teams == null or #arrays.isEmpty(teams)}" class="col-md-12 col-lg-12 order-2 mb-6">
+                                <div class="card h-100 p-8">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <img
+                                                src="/common/sneat_template/assets/img/icons/unicons/alert.png"
+                                                alt="No Team Assigned"
+                                                class="img-fluid mb-3"
+                                                style="max-width: 150px;"/>
+                                        <h4 class="mb-2">Hello, <span th:text="${user.name}"></span>!</h4>
+                                        <p class="mb-3">
+                                            The <span th:text="${userData.role}"></span> <span th:text="${userData.name}"></span> is currently not added to any team. Once any team assigned,
+                                            the team dashboard and related details will be available here. Stay tuned!
+                                        </p>
+                                        <a href="https://dlrs.assam.gov.in/contact-us" target="_blank"
+                                           class="btn btn-primary btn-lg my-8 px-8">
+                                            Learn More
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / Content -->
+
+
+            <div class="content-backdrop fade"></div>
+        </div>
+        <!-- Content wrapper -->
+    </div>
+    <!-- / Layout page -->
+</div>
+
+<!-- Overlay -->
+<div class="layout-overlay layout-menu-toggle"></div>
+</div>
+
+
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+
+<script src="/common/sneat_template/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/common/sneat_template/assets/vendor/libs/popper/popper.js"></script>
+<script src="/common/sneat_template/assets/vendor/js/bootstrap.js"></script>
+<script src="/common/sneat_template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="/common/sneat_template/assets/vendor/js/menu.js"></script>
+
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+
+<!-- Main JS -->
+<script src="/common/sneat_template/assets/js/main.js"></script>
+
+<!-- Page JS -->
+<script src="/common/sneat_template/assets/js/pages-account-settings-account.js"></script>
+
+<!-- Place this tag before closing body tag for github widget button. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script th:src="@{/javascript/dashboard.js}" type="text/javascript"></script>
+
+</body>
+</html>

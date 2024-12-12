@@ -1,5 +1,7 @@
 package com.dlrs.dlrsdemo.controller;
 
+import com.dlrs.dlrsdemo.common.UserRole;
+import com.dlrs.dlrsdemo.dto.ResponseDto;
 import com.dlrs.dlrsdemo.dto.UserLoginDto;
 import com.dlrs.dlrsdemo.model.AppUser;
 import com.dlrs.dlrsdemo.model.Team;
@@ -129,17 +131,25 @@ public class AuthController {
 
     @DeleteMapping("/secure/deleteUser")
     @ResponseBody
-    public String deleteUser(@RequestParam Long userId){
+    public ResponseDto deleteUser(@RequestParam Long userId){
         String res = "initiated";
+        ResponseDto responseData = new ResponseDto();
         System.out.println(userId);
         AppUser user = appUserRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User Not Found"));
-        Team team = userService.getSurveyorTeam(user);
-        if(team == null){
-            appUserRepository.delete(user);
-            res = "Surveyor Deleted Successfully";
+        if(user.getRole() == UserRole.SURVEYOR){
+            Team team = userService.getSurveyorTeam(user);
+            if(team == null){
+                appUserRepository.delete(user);
+                responseData.setResCode("Success");
+                responseData.setResponse("Surveyor Deleted Successfully");
+            }else{
+                responseData.setResCode("Failed");
+                responseData.setResponse("Unable to delete the Surveyor! Surveyor is already associated with a team");
+            }
         }else{
-            res = "Unable to delete the Surveyor! Surveyor is already associated with a team.";
+            responseData = userService.deleteUser(userId);
         }
-        return res;
+
+        return responseData;
     }
 }

@@ -1,6 +1,7 @@
 package com.dlrs.dlrsdemo.service;
 
 import com.dlrs.dlrsdemo.common.UserRole;
+import com.dlrs.dlrsdemo.dto.ResponseDto;
 import com.dlrs.dlrsdemo.model.AppUser;
 import com.dlrs.dlrsdemo.model.Team;
 import com.dlrs.dlrsdemo.repository.AppUserRepository;
@@ -40,48 +41,33 @@ public class AppUserService {
 
 
     @PreAuthorize("hasAuthority('super_admin')")
-    public String deleteUser(Long userId) {
+    public ResponseDto deleteUser(Long userId) {
         String res = "";
+        ResponseDto responseData = new ResponseDto();
         boolean isExist = true;
         List<Team> teamsList = new ArrayList<>();
         AppUser userData = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User Not found!"));
         if(userData.getRole() == UserRole.SUPER_ADMIN){
-            res = "You can't delete the Super Admin!";
+            responseData.setResCode("Failed");
+            responseData.setResponse("You can't delete the Super Admin!");
         }else if(userData.getRole() == UserRole.SUPERVISOR){
             teamsList = teamRepository.findAllBySupervisor(userData);
             if(teamsList.isEmpty()){
                 userRepository.deleteById(userId);
                 if(userRepository.existsById(userId)){
-                    res = "Unable to delete the user";
+                    responseData.setResCode("Failed");
+                    responseData.setResponse("Unable to delete the user");
                 }else{
-                    res = "Successfully deleted the user";
+                    responseData.setResCode("Success");
+                    responseData.setResponse("Successfully deleted the user");
                 }
             }else{
-                res = "Failed! Supervisor is associated with team.";
+                responseData.setResCode("Failed");
+                responseData.setResponse("Failed! Supervisor is associated with team");
             }
-        }else{
-            teamsList = teamRepository.findAll();
-            for (Team team : teamsList){
-                if(team.getSurveyors().contains(userData)){
-                    res = "Unable to delete! This user associated with a team";
-                    break;
-                }else{
-                    userRepository.deleteById(userId);
-                    if(team.getSurveyors().isEmpty()){
-                        teamRepository.delete(team);
-                    }
-                    if(userRepository.existsById(userId)){
-                        res = "Unable to delete the user";
-                    }else{
-                        res = "Successfully deleted the user";
-                    }
-
-                }
-            }
-
         }
 
-        return res;
+        return responseData;
     }
 
     public List<AppUser> getOwnSurveyors(AppUser user) {

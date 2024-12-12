@@ -61,48 +61,7 @@
         <div class="layout-page">
             <!-- Navbar -->
 
-            <nav
-                    class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-                    id="layout-navbar">
-                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
-                    <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
-                        <i class="bx bx-menu bx-md"></i>
-                    </a>
-                </div>
-
-                <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-                    <!-- Search -->
-                    <div class="navbar-nav align-items-center">
-                        <div class="nav-item d-flex align-items-center">
-                            <i class="bx bx-search bx-md"></i>
-                            <input
-                                    type="text"
-                                    class="form-control border-0 shadow-none ps-1 ps-sm-2"
-                                    placeholder="Search..."
-                                    aria-label="Search..."/>
-                        </div>
-                    </div>
-                    <!-- /Search -->
-
-
-                    <ul class="nav nav-pills flex-row align-items-center ms-auto" role="tablist">
-                        <li class="nav-item d-flex align-items-center">
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                <div class="me-2 text-end">
-                                    <h6 class="mb-0">
-                                        <span th:text="${user.name}"></span>
-                                    </h6>
-                                    <small><span th:text="${user.role}"></span></small>
-                                </div>
-                            </div>
-                            <div class="avatar flex-shrink-0 me-3">
-                                <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-user"></i></span>
-                            </div>
-                        </li>
-                    </ul>
-
-                </div>
-            </nav>
+            <div th:replace="~{fragment/navbar :: navbar}"></div>
 
             <!-- / Navbar -->
 
@@ -348,7 +307,7 @@
 
                         <!--/ Expense Overview -->
                         <!-- Transactions -->
-                        <div th:if="${team != null}" class="col-md-12 col-lg-12 order-2 mb-6">
+                        <div th:if="${teams != null and not #arrays.isEmpty(teams)}" class="col-md-12 col-lg-12 order-2 mb-6">
                             <div class="card h-100">
                                 <div class="card-header d-flex align-items-center justify-content-between">
                                     <h5 class="card-title m-0 me-2">Teams</h5>
@@ -403,6 +362,27 @@
 
                             </div>
                         </div>
+                        <div th:if="${teams == null or #arrays.isEmpty(teams) and #strings.trim(user.role) != 'SURVEYOR'}" class="col-md-12 col-lg-12 order-2 mb-6">
+                            <div class="card h-100 p-8">
+                                <div class="d-flex flex-column align-items-center">
+                                    <img
+                                            src="/common/sneat_template/assets/img/icons/unicons/alert.png"
+                                            alt="No Team Assigned"
+                                            class="img-fluid mb-3"
+                                            style="max-width: 150px;"/>
+                                    <h4 class="mb-2">Hello, <span th:text="${user.name}"></span>!</h4>
+                                    <p class="mb-3">
+                                        You are currently not assigned to any team. Once a team is assigned to you,
+                                        the team dashboard and related details will be available here. Stay tuned!
+                                    </p>
+                                    <a href="https://dlrs.assam.gov.in/contact-us" target="_blank"
+                                       class="btn btn-primary btn-lg my-8 px-8">
+                                        Learn More
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
                         <!--/ Transactions -->
                     </div>
                 </div>
