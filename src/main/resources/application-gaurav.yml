@@ -4,3 +4,29 @@ spring:
     username: postgres
     password: gaurav
     driver-class-name: org.postgresql.Driver
+
+
+
+#spring:
+#  datasource:
+#    primary:
+#      url: jdbc:postgresql://localhost:5432/dlrsdemo
+#      username: postgres
+#      password: gaurav
+#      driver-class-name: org.postgresql.Driver
+#
+#      jpa:
+#        database-platform: org.hibernate.dialect.PostgreSQLDialect
+#
+#    secondary:
+#      url: jdbc:postgresql://localhost:5433/dlrsDB
+#      username: postgres
+#      password: gaurav
+#      driver-class-name: org.postgresql.Driver
+#
+#
+#logging:
+#  level:
+#    org.springframework.jdbc: DEBUG
+#    org.springframework.orm.jpa: DEBUG
+#    org.springframework.boot.orm.jpa: DEBUG
