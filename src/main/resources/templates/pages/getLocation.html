@@ -115,6 +115,84 @@
         font-weight: bold;
         color: white;
     }
+
+     /* Modal Background */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+         /* Modal Background */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        /* Modal Content */
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-height: 90%;
+            overflow-y: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: black;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #555;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
   </style>
 </head>
 <body>
@@ -124,12 +202,12 @@
     <h5><strong>Select Location (DLRS)</strong></h5>
     <hr/>
 
-    <!-- Form Start -->
+    <!-- Form for selecting District and Sub Division -->
     <div class="form-group">
       <label for="district">Select District <span class="text-danger">*</span></label>
       <select id="district" name="district" class="form-select" required>
         <option value="">Select</option>
-        <option value="Kamrup Metro">কামৰূপ</option>
+        <option value="07">কামৰূপ</option>
       </select>
     </div>
 
@@ -137,6 +215,7 @@
       <label for="subdiv">Select Sub Division <span class="text-danger">*</span></label>
       <select id="subdiv" name="subdiv" class="form-select" required>
         <option value="">Select</option>
+        <!-- You can populate this dynamically with sub-division options based on district -->
       </select>
     </div>
 
@@ -145,12 +224,14 @@
         <label for="circle">Select Circle <span class="text-danger">*</span></label>
         <select id="circle" name="circle" class="form-select" required>
           <option value="">Select</option>
+          <!-- Circle options go here -->
         </select>
       </div>
       <div class="form-group form-group-half">
         <label for="mouza">Select Mouza <span class="text-danger">*</span></label>
         <select id="mouza" name="mouza" class="form-select" required>
           <option value="">Select</option>
+          <!-- Mouza options go here -->
         </select>
       </div>
     </div>
@@ -160,41 +241,42 @@
         <label for="lot">Select Lot <span class="text-danger">*</span></label>
         <select id="lot" name="lot" class="form-select" required>
           <option value="">Select</option>
+          <!-- Lot options go here -->
         </select>
       </div>
       <div class="form-group form-group-half">
         <label for="village">Select Village <span class="text-danger">*</span></label>
         <select id="village" name="village" class="form-select" required>
           <option value="">Select</option>
+          <!-- Village options go here -->
         </select>
       </div>
     </div>
+
     <div class="form-row">
       <div class="form-group form-group-half">
-        <label for="lot">Select Patta No <span class="text-danger">*</span></label>
+        <label for="pattano">Select Patta No <span class="text-danger">*</span></label>
         <select id="pattano" name="pattano" class="form-select" required>
           <option value="">Select</option>
+          <!-- Patta No options go here -->
         </select>
       </div>
       <div class="form-group form-group-half">
-        <label for="village">Select Patta Type <span class="text-danger">*</span></label>
+        <label for="pattatype">Select Patta Type <span class="text-danger">*</span></label>
         <select id="pattatype" name="pattatype" class="form-select" required>
           <option value="">Select</option>
+          <!-- Patta Type options go here -->
         </select>
       </div>
     </div>
-<!--    <div class="form-group">-->
-<!--      <label for="dag">Select Dag Number <span class="text-danger">*</span></label>-->
-<!--      <select id="dag" name="dag" class="form-select" required>-->
-<!--        <option value="">Select</option>-->
-<!--      </select>-->
-<!--    </div>-->
+
     <div class="form-row">
       <a href="/secure/home"><button type="button" class="btn-submit">Back</button></a>
       <button type="button" id="find-details" class="btn-submit">Find Pattadar Details</button>
-    </div>
+      <button id="openModal" type="button" class="btn-submit">Add Pattadar</button>
     </div>
   </div>
+</div>
 
   <table id="data-table" style="display: none;">
     <thead>
@@ -207,6 +289,77 @@
     <tbody></tbody>
   </table>
 
+
+<!-- Modal for Chitha Data Entry -->
+<div id="chithaModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <h2>Chitha Data Entry</h2>
+
+    <!-- Section 1: Chitha Pattadar -->
+    <div class="section-title">Chitha Pattadar</div>
+    <form id="chithaForm" method="POST" action="/secure/processForm">
+      <!-- Section 1: Basic Details -->
+
+      <label for="district_id">District Id</label>
+      <input type="text" id="district_id" name="district_id" maxlength="100" required>
+
+      <label for="subdiv_id">Sub Id</label>
+      <input type="text" id="subdiv_id" name="subdiv_id" maxlength="100" required>
+
+      <label for="circle_id">circle Id</label>
+      <input type="text" id="circle_id" name="circle_id" maxlength="100" required>
+
+      <label for="mouza_id">mouza Id</label>
+      <input type="text" id="mouza_id" name="mouza_id" maxlength="100" required>
+
+      <label for="lot_id">Lot Id</label>
+      <input type="text" id="lot_id" name="lot_id" maxlength="100" required>
+
+      <label for="village_id">village Id</label>
+      <input type="text" id="village_id" name="village_id" maxlength="100" required>
+
+      <label for="pattano_id">patta no Id</label>
+      <input type="text" id="pattano_id" name="pattano_id" maxlength="100" required>
+
+      <label for="pattatype_id">pattatype Id</label>
+      <input type="text" id="pattatype_id" name="pattatype_id" maxlength="100" required>
+
+      <label for="pdar_name">Pattadar Name</label>
+      <input type="text" id="pdar_name" name="pdar_name" maxlength="100" required>
+
+      <label for="pdar_father">Pattadar Father's Name</label>
+      <input type="text" id="pdar_father" name="pdar_father" maxlength="100" required>
+
+      <!-- Section 2: Chitha Basic -->
+      <div class="section-title">Chitha Basic</div>
+
+      <!-- Input for DAG Area (Bigha), (Kotha), (Lecha) -->
+      <label for="dag_area_b">DAG Area (Bigha)</label>
+      <input type="number" id="dag_area_b" name="dag_area_b" maxlength="5" required>
+
+      <label for="dag_area_k">DAG Area (Kotha)</label>
+      <input type="number" id="dag_area_k" name="dag_area_k" maxlength="5" required>
+
+      <label for="dag_area_lc">DAG Area (Lecha)</label>
+      <input type="number" id="dag_area_lc" name="dag_area_lc" maxlength="5" required>
+
+      <label for="dag_area_type">Area Type</label>
+      <select id="dag_area_type" name="dag_area_type" required>
+        <option value="">Select Area Type</option>
+        <!-- Iterate over the land attribute using Thymeleaf -->
+        <option th:each="landItem : ${land}"
+                th:value="${landItem['class_code']}"
+                th:text="${landItem['land_type']}">
+        </option>
+      </select>
+
+      <!-- Submit Button -->
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -214,6 +367,53 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 <!--<script th:src="@{/javascript/location.js}" type="text/javascript"></script>-->
 <script th:src="@{/javascript/pattadar.js}" type="text/javascript"></script>
+
+<script>
+         // Modal Logic
+  const modal = document.getElementById("chithaModal");
+  const openModal = document.getElementById("openModal");
+  const closeModal = document.getElementById("closeModal");
+
+  // Open Modal
+  openModal.onclick = function () {
+    // Capture selected dropdown values
+    const district = document.getElementById('district').value;
+    const subdiv = document.getElementById('subdiv').value;
+    const circle = document.getElementById('circle').value;
+    const mouza = document.getElementById('mouza').value;
+    const lot = document.getElementById('lot').value;
+    const village = document.getElementById('village').value;
+    const pattano = document.getElementById('pattano').value;
+    const pattatype = document.getElementById('pattatype').value;
+
+    // Populate modal inputs with the selected values
+  document.getElementById('district_id').value = district;
+   document.getElementById('subdiv_id').value = subdiv;
+
+    // Example for other fields in the modal
+    document.getElementById('circle_id').value = circle;
+    document.getElementById('mouza_id').value = mouza;
+    document.getElementById('lot_id').value = lot;
+    document.getElementById('village_id').value = village;
+    document.getElementById('pattano_id').value = pattano;
+    document.getElementById('pattatype_id').value = pattatype;
+
+    // Open the modal
+    modal.style.display = "block";
+  };
+
+  // Close Modal
+  closeModal.onclick = function () {
+    modal.style.display = "none";
+  };
+
+  // Close Modal if clicked outside
+  window.onclick = function (event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+    </script>
 
 </body>
 </html>

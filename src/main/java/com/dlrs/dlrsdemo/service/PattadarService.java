@@ -1,8 +1,13 @@
 package com.dlrs.dlrsdemo.service;
+import com.dlrs.dlrsdemo.dto.ReqDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Types;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +16,10 @@ public class PattadarService {
 
     @Autowired
     private JdbcTemplate jdbc;
+
+    @Autowired
+    private NamedParameterJdbcTemplate jdbcTemplate;
+
     public List<Map<String, Object>>  getAllSubdivisions() {
         String sql = "SELECT subdiv_code, loc_name \n" +
                 "FROM public.location\n" +
@@ -21,15 +30,9 @@ public class PattadarService {
                 "  AND lot_no = '00' \n" +
                 "  AND vill_townprt_code = '00000'";
 
-        System.out.println(jdbc.queryForList(sql));
-
         return jdbc.queryForList(sql);
 
     }
-
-
-
-
 
     public List<Map<String, Object>> getAllCircles(String subdivCode) {
 
@@ -42,10 +45,8 @@ public class PattadarService {
                 "  AND lot_no = '00' " +
                 "  AND vill_townprt_code = '00000'";
 
-        int subdiv = Integer.parseInt(subdivCode);
-        System.out.println(jdbc.queryForList(sql, subdiv));
-
-        return jdbc.queryForList(sql, subdiv);
+//        int subdiv = Integer.parseInt(subdivCode);
+        return jdbc.queryForList(sql, subdivCode);
     }
 
     public List<Map<String, Object>> getAllMouzas(String subdivCode, String circleCode) {
@@ -59,7 +60,6 @@ public class PattadarService {
                 "  AND vill_townprt_code = '00000'";
 
 
-        System.out.println(jdbc.queryForList(sql, subdivCode, circleCode));
         return jdbc.queryForList(sql, subdivCode, circleCode);
     }
 
@@ -98,7 +98,7 @@ public class PattadarService {
 
 
     public List<Map<String, Object>> getAllPattaNo(String subdivCode, String circleCode, String mouzaCode, String lotNo, String villageNo) {
-        String sql = "SELECT patta_no " +
+        String sql = "SELECT Distinct patta_no " +
                 "FROM public.chitha_pattadar\n" +
                 "WHERE dist_code = '07' \n" +
                 "  AND subdiv_code = ? " +
@@ -107,7 +107,6 @@ public class PattadarService {
                 "  AND lot_no = ? " +
                 "  AND vill_townprt_code = ?";
 
-        System.out.println(jdbc.queryForList(sql, subdivCode, circleCode, mouzaCode, lotNo, villageNo));
         return jdbc.queryForList(sql, subdivCode, circleCode, mouzaCode, lotNo, villageNo);
     }
 
@@ -144,7 +143,40 @@ public class PattadarService {
                 "  AND patta_no = ?" +
                 "  AND patta_type_code = ?" ;
 
-        System.out.println(jdbc.queryForList(sql, subdivCode, circleCode, mouzaCode, lotNo, villageNo, pattaNo, pattaType));
         return jdbc.queryForList(sql, subdivCode, circleCode, mouzaCode, lotNo, villageNo, pattaNo, pattaType);
+    }
+
+
+    public List<Map<String, Object>> getAllLandClass() {
+        String sql = "SELECT class_code,land_type FROM \"public\".\"landclass_code\"";
+        return jdbc.queryForList(sql);
+    }
+
+    public void addChithaPattadar(ReqDTO reqDTO) {
+        String sql = "INSERT INTO \"public\".\"chitha_pattadar\" (" +
+                "\"dist_code\", \"subdiv_code\", \"cir_code\", \"mouza_pargona_code\", \"lot_no\", " +
+                "\"vill_townprt_code\", \"pdar_id\", \"patta_no\", \"patta_type_code\", \"pdar_name\", " +
+                "\"pdar_father\", \"user_code\", \"date_entry\", \"operation\", \"jama_yn\") " +
+                "VALUES (:district_id, :subdiv_id, :circle_id, :mouza_id, :lot_id, " +
+                ":village_id, :pdar_id, :pattano_id, :pattatype_id, :pdar_name, :pdar_father, 'test', :date_entry, 'E' , 'y')";
+
+        // Create a map of parameters to pass to the query
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("district_id", reqDTO.getDistrict_id());
+        params.addValue("subdiv_id", reqDTO.getSubdiv_id());
+        params.addValue("circle_id", reqDTO.getCircle_id());
+        params.addValue("mouza_id", reqDTO.getMouza_id());
+        params.addValue("lot_id", reqDTO.getLot_id());
+        params.addValue("village_id", reqDTO.getVillage_id());
+        params.addValue("pattano_id", reqDTO.getPattano_id());
+        params.addValue("pattatype_id", reqDTO.getPattatype_id());
+        params.addValue("pdar_name", reqDTO.getPdar_name());
+        params.addValue("pdar_father", reqDTO.getPdar_father());
+        params.addValue("date_entry", new Date());
+
+        params.addValue("pdar_id", 1, Types.INTEGER);
+
+        // Execute the insert query
+        jdbcTemplate.update(sql, params);
     }
 }

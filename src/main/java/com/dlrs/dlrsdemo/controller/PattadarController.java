@@ -1,14 +1,17 @@
 package com.dlrs.dlrsdemo.controller;
 
 import com.dlrs.dlrsdemo.dto.LocationResponseDto;
+import com.dlrs.dlrsdemo.dto.ReqDTO;
 import com.dlrs.dlrsdemo.service.PattadarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping("/secure")
 public class PattadarController {
 
@@ -64,10 +67,13 @@ public class PattadarController {
         return pattadarService.getAllPattadars(subdivCode, circleCode, mouzaCode, lotNo, villageNo, pattaNo, pattaType);
     }
 
+    @PostMapping("/processForm")
+    public String processForm(@ModelAttribute ReqDTO reqDTO) {
+        System.out.println(reqDTO.toString());
 
+        pattadarService.addChithaPattadar(reqDTO);
 
-
-
-
+        return "redirect:/secure/home";
+    }
 
 }
