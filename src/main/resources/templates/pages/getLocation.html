@@ -293,37 +293,32 @@
 <!-- Modal for Chitha Data Entry -->
 <div id="chithaModal" class="modal">
   <div class="modal-content">
-    <span id="closeModal" class="close">&times;</span>
-    <h2>Chitha Data Entry</h2>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h5 class="text-primary fw-bold m-0">Chitha Data Entry</h5>
+      <span id="closeModal" class="close">&times;</span>
+    </div>
 
     <!-- Section 1: Chitha Pattadar -->
     <div class="section-title">Chitha Pattadar</div>
     <form id="chithaForm" method="POST" action="/secure/processForm">
       <!-- Section 1: Basic Details -->
 
-      <label for="district_id">District Id</label>
-      <input type="text" id="district_id" name="district_id" maxlength="100" required>
+      <input type="hidden" id="district_id" name="district_id" maxlength="100" required>
 
-      <label for="subdiv_id">Sub Id</label>
-      <input type="text" id="subdiv_id" name="subdiv_id" maxlength="100" required>
+      <input type="hidden" id="subdiv_id" name="subdiv_id" maxlength="100" required>
 
-      <label for="circle_id">circle Id</label>
-      <input type="text" id="circle_id" name="circle_id" maxlength="100" required>
+      <input type="hidden" id="circle_id" name="circle_id" maxlength="100" required>
 
-      <label for="mouza_id">mouza Id</label>
-      <input type="text" id="mouza_id" name="mouza_id" maxlength="100" required>
+      <input type="hidden" id="mouza_id" name="mouza_id" maxlength="100" required>
 
-      <label for="lot_id">Lot Id</label>
-      <input type="text" id="lot_id" name="lot_id" maxlength="100" required>
+      <input type="hidden" id="lot_id" name="lot_id" maxlength="100" required>
 
-      <label for="village_id">village Id</label>
-      <input type="text" id="village_id" name="village_id" maxlength="100" required>
+      <input type="hidden" id="village_id" name="village_id" maxlength="100" required>
 
-      <label for="pattano_id">patta no Id</label>
-      <input type="text" id="pattano_id" name="pattano_id" maxlength="100" required>
+      <input type="hidden" id="pattano_id" name="pattano_id" maxlength="100" required>
 
-      <label for="pattatype_id">pattatype Id</label>
-      <input type="text" id="pattatype_id" name="pattatype_id" maxlength="100" required>
+      <input type="hidden" id="pattatype_id" name="pattatype_id" maxlength="100" required>
 
       <label for="pdar_name">Pattadar Name</label>
       <input type="text" id="pdar_name" name="pdar_name" maxlength="100" required>

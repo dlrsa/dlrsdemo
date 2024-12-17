@@ -152,7 +152,7 @@ public class PattadarService {
         return jdbc.queryForList(sql);
     }
 
-    public void addChithaPattadar(ReqDTO reqDTO) {
+    public void addChithaPattadar(ReqDTO reqDTO, Integer count) {
         String sql = "INSERT INTO \"public\".\"chitha_pattadar\" (" +
                 "\"dist_code\", \"subdiv_code\", \"cir_code\", \"mouza_pargona_code\", \"lot_no\", " +
                 "\"vill_townprt_code\", \"pdar_id\", \"patta_no\", \"patta_type_code\", \"pdar_name\", " +
@@ -174,9 +174,42 @@ public class PattadarService {
         params.addValue("pdar_father", reqDTO.getPdar_father());
         params.addValue("date_entry", new Date());
 
-        params.addValue("pdar_id", 1, Types.INTEGER);
+        params.addValue("pdar_id", count, Types.INTEGER);
 
         // Execute the insert query
         jdbcTemplate.update(sql, params);
     }
+
+
+    public Integer getAllPattadarsCount(ReqDTO reqDTO) {
+
+        String sql = "SELECT count(*) " +
+                "FROM public.chitha_pattadar " +
+                "WHERE dist_code = '07' " +
+                "  AND subdiv_code = ? " +
+                "  AND cir_code = ? " +
+                "  AND mouza_pargona_code = ? " +
+                "  AND lot_no = ? " +
+                "  AND vill_townprt_code = ? " +
+                "  AND patta_no = ? " +
+                "  AND patta_type_code = ?";
+
+        // Use queryForObject to fetch a single value
+        Integer count = jdbc.queryForObject(
+                sql,
+                new Object[]{
+                        reqDTO.getSubdiv_id(),
+                        reqDTO.getCircle_id(),
+                        reqDTO.getMouza_id(),
+                        reqDTO.getLot_id(),
+                        reqDTO.getVillage_id(),
+                        reqDTO.getPattano_id(),
+                        reqDTO.getPattatype_id()
+                },
+                Integer.class // Specify the expected return type
+        );
+
+        return count != null ? count : 0; // Ensure it returns 0 if count is null
+    }
+
 }

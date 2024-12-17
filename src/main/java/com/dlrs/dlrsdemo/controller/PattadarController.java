@@ -69,9 +69,11 @@ public class PattadarController {
 
     @PostMapping("/processForm")
     public String processForm(@ModelAttribute ReqDTO reqDTO) {
-        System.out.println(reqDTO.toString());
 
-        pattadarService.addChithaPattadar(reqDTO);
+        Integer count = pattadarService.getAllPattadarsCount(reqDTO);
+
+
+        pattadarService.addChithaPattadar(reqDTO, count+1);
 
         return "redirect:/secure/home";
     }
