@@ -22,4 +22,5 @@ public class ReqDTO {
     private String dag_area_k;
     private String dag_area_lc;
     private String dag_area_type;
+    private String dag_no;
 }

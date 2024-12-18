@@ -413,5 +413,56 @@ $(document).ready(function() {
               });
             });
 
+            $('.add_pattadar').click(function () {
+                          // Get selected values
+                          var subdivCode = $('#subdiv').val();
+                          var circleCode = $('#circle').val();
+                          var mouzaCode = $('#mouza').val();
+                          var lotNo = $('#lot').val();
+                          var villageNo = $('#village').val();
+                          var pattaNo = $('#pattano').val();
+                          var pattaType = $('#pattatype').val();
+
+
+                          // Make AJAX GET request to fetch pattadar details
+                          $.ajax({
+                            url: '/secure/getDagNo', // Update this to match your API endpoint
+                            type: 'GET',
+                            data: {
+                              subdivCode: subdivCode,
+                              circleCode: circleCode,
+                              mouzaCode: mouzaCode,
+                              lotNo: lotNo,
+                              villageNo: villageNo,
+                              pattaNo: pattaNo,
+                              pattaType: pattaType
+                            },
+                            success: function (data) {
+                              console.log("Data ", data);
+
+                                                                      // Clear the existing options in the #circle dropdown
+                                                                      $('#dag_drop').empty();
+
+                                                                      // Add a default "Select" option
+                                                                      $('#dag_drop').append('<option value="">Select</option>');
+
+                                                                      // Check if data has been returned, assuming it's an array of circles
+                                                                      if (data && data.length > 0) {
+                                                                          // Iterate over the data array and create options dynamically
+                                                                          data.forEach(function(dag) {
+                                                                              $('#dag_drop').append('<option value="' + dag.dag_no + '">' + dag.dag_no + '</option>');
+                                                                          });
+                                                                      } else {
+                                                                          // In case no data is returned, you can show a message or leave empty
+                                                                          $('#dag_drop').append('<option value="">Dag Number not available</option>');
+                                                                      }
+                            },
+                            error: function (error) {
+                              console.log("Error fetching pattadar details:", error);
+                              $('#data-table').hide();
+                            }
+                          });
+                        });
+
 
 });

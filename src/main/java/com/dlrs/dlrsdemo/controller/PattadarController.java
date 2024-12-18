@@ -74,8 +74,15 @@ public class PattadarController {
 
 
         pattadarService.addChithaPattadar(reqDTO, count+1);
+        pattadarService.addChithaDagPattadar(reqDTO, count+1);
 
         return "redirect:/secure/home";
+    }
+
+    @ResponseBody
+    @GetMapping("/getDagNo")
+    List<Map<String, Object>> getDagNo(@RequestParam String subdivCode, @RequestParam String circleCode, @RequestParam String mouzaCode, @RequestParam String lotNo, @RequestParam String villageNo, @RequestParam String pattaNo, @RequestParam String pattaType){
+        return pattadarService.getAllDagNo(subdivCode, circleCode, mouzaCode, lotNo, villageNo, pattaNo,pattaType);
     }
 
 }

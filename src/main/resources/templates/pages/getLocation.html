@@ -273,7 +273,8 @@
     <div class="form-row">
       <a href="/secure/home"><button type="button" class="btn-submit">Back</button></a>
       <button type="button" id="find-details" class="btn-submit">Find Pattadar Details</button>
-      <button id="openModal" type="button" class="btn-submit">Add Pattadar</button>
+<!--      <button id="" type="button" class="btn-submit">Add Dag</button>-->
+      <button id="openModal" type="button" class="add_pattadar">Add Pattadar</button>
     </div>
   </div>
 </div>
@@ -329,7 +330,13 @@
       <!-- Section 2: Chitha Basic -->
       <div class="section-title">Chitha Basic</div>
 
-      <!-- Input for DAG Area (Bigha), (Kotha), (Lecha) -->
+      <label for="dag_drop">DAG Number</label>
+      <select id="dag_drop" name="dag_no" required>
+        <option value="">Select Dag Number</option>
+        <!-- Iterate over the land attribute using Thymeleaf -->
+
+      </select>
+
       <label for="dag_area_b">DAG Area (Bigha)</label>
       <input type="number" id="dag_area_b" name="dag_area_b" maxlength="5" required>
 
