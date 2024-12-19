@@ -93,7 +93,7 @@ public class AuthController {
 
             userFind = userService.findByEmail(userDetails.getUsername());
 
-            return new ResponseEntity<>(userFind, HttpStatus.OK);
+            return new ResponseEntity<>(jwtToken, HttpStatus.OK);
 
 
 
