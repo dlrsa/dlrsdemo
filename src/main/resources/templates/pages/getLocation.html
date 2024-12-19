@@ -9,6 +9,8 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
   <style>
     body {
         background: #f3f4f6;
@@ -271,10 +273,11 @@
     </div>
 
     <div class="form-row">
-      <a href="/secure/home"><button type="button" class="btn-submit">Back</button></a>
+      <a href="/secure/home">
+        <button type="button" class="btn-submit">Back</button>
+      </a>
       <button type="button" id="find-details" class="btn-submit">Find Pattadar Details</button>
-<!--      <button id="" type="button" class="btn-submit">Add Dag</button>-->
-      <button id="openModal" type="button" class="add_pattadar">Add Pattadar</button>
+      <button id="openModal" type="button" class="btn-submit add_pattadar">Add Pattadar</button>
     </div>
   </div>
 </div>
@@ -357,7 +360,7 @@
       </select>
 
       <!-- Submit Button -->
-      <button type="submit">Submit</button>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
 </div>
@@ -369,6 +372,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 <!--<script th:src="@{/javascript/location.js}" type="text/javascript"></script>-->
 <script th:src="@{/javascript/pattadar.js}" type="text/javascript"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
 
 <script>
          // Modal Logic
