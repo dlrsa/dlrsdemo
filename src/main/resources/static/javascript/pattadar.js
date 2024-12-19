@@ -1,4 +1,7 @@
 $(document).ready(function() {
+    $('.add_pattadar').attr('disabled', 'disabled');
+
+
     // Trigger when the district dropdown value changes
     $('#district').change(function() {
         // Get the selected district value
@@ -329,6 +332,7 @@ $(document).ready(function() {
                                             // Iterate over the data array and create options dynamically
                                             data.forEach(function(dag) {
                                                 $('#pattatype').append('<option value="' + dag.patta_type_code + '">' + dag.patta_type + '</option>');
+
                                             });
                                         } else {
                                             // In case no data is returned, you can show a message or leave empty
@@ -349,8 +353,12 @@ $(document).ready(function() {
                             }
                         });
 
+        $('#pattatype').change(function() {
+            $('.add_pattadar').removeAttr('disabled');
+        })
 
         $('#find-details').click(function () {
+
               // Get selected values
               var subdivCode = $('#subdiv').val();
               var circleCode = $('#circle').val();
@@ -362,7 +370,21 @@ $(document).ready(function() {
 
               // Validate input before making the AJAX request
               if (!subdivCode || !circleCode || !mouzaCode || !lotNo || !villageNo || !pattaNo || !pattaType ) {
-                alert("Please fill out all required fields.");
+                $.confirm({
+                                                                    title: 'Missing Information',
+                                                                    content: 'Please fill out all required fields.',
+                                                                    type: 'red',
+                                                                    typeAnimated: true,
+                                                                    buttons: {
+                                                                        ok: {
+                                                                            text: "OK",
+                                                                            btnClass: 'btn-red',
+                                                                            action: function() {
+                                                                                // Optional action on OK button
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
                 return;
               }
 
@@ -423,75 +445,56 @@ $(document).ready(function() {
              var pattaNo = $('#pattano').val();
              var pattaType = $('#pattatype').val();
 
+
              // Make AJAX GET request to fetch pattadar details
              $.ajax({
-               url: '/secure/getDagNo', // Update this to match your API endpoint
-               type: 'GET',
-               data: {
-                 subdivCode: subdivCode,
-                 circleCode: circleCode,
-                 mouzaCode: mouzaCode,
-                 lotNo: lotNo,
-                 villageNo: villageNo,
-                 pattaNo: pattaNo,
-                 pattaType: pattaType
-               },
-               success: function (data) {
-                 console.log("Data ", data);
+                                             url: '/secure/getDagNo', // Update this to match your API endpoint
+                                             type: 'GET',
+                                             data: {
+                                               subdivCode: subdivCode,
+                                               circleCode: circleCode,
+                                               mouzaCode: mouzaCode,
+                                               lotNo: lotNo,
+                                               villageNo: villageNo,
+                                               pattaNo: pattaNo,
+                                               pattaType: pattaType
+                                             },
+                                             success: function (data) {
+                                               console.log("Data ", data);
 
-                 // Clear the existing options in the #dag_drop dropdown
-                 $('#dag_drop').empty();
+                                               // Clear the existing options in the #dag_drop dropdown
+                                               $('#dag_drop').empty();
 
-                 // Add a default "Select" option
-                 $('#dag_drop').append('<option value="">Select</option>');
+                                               // Add a default "Select" option
+                                               $('#dag_drop').append('<option value="">Select</option>');
 
-                 // Check if data has been returned, assuming it's an array of circles
-                 if (data && data.length > 0) {
-                   // Iterate over the data array and create options dynamically
-                   data.forEach(function (dag) {
-                     $('#dag_drop').append('<option value="' + dag.dag_no + '">' + dag.dag_no + '</option>');
-                   });
+                                               // Check if data has been returned, assuming it's an array of circles
+                                               if (data && data.length > 0) {
+                                                 // Iterate over the data array and create options dynamically
+                                                 data.forEach(function (dag) {
+                                                   $('#dag_drop').append('<option value="' + dag.dag_no + '">' + dag.dag_no + '</option>');
+                                                 });
+                                               } else {
+                                                 // In case no data is returned, show a message or leave empty
+                                                 $('#dag_drop').append('<option value="">Dag Number not available</option>');
 
-                   // Success confirmation dialog
-                   $('<div>Pattadar details fetched successfully!</div>').dialog({
-                     title: 'Success',
-                     buttons: {
-                       OK: function () {
-                         $(this).dialog('close');
-                       }
-                     },
-                     modal: true
-                   });
-                 } else {
-                   // In case no data is returned, show a message or leave empty
-                   $('#dag_drop').append('<option value="">Dag Number not available</option>');
+                                               }
+                                             },
+                                             error: function (error) {
+                                               console.log("Error fetching pattadar details:", error);
 
-                   // Error confirmation dialog
-                   $('<div>No Dag Numbers available for the selected filters.</div>').dialog({
-                     title: 'Information',
-                     buttons: {
-                       OK: function () {
-                         $(this).dialog('close');
-                       }
-                     },
-                     modal: true
-                   });
-                 }
-               },
-               error: function (error) {
-                 console.log("Error fetching pattadar details:", error);
+                                               // Error dialog
+                                               $('<div>Error fetching Pattadar details. Please try again later.</div>').dialog({
+                                                 title: 'Error',
+                                                 buttons: {
+                                                   OK: function () {
+                                                     $(this).dialog('close');
+                                                   }
+                                                 },
+                                                 modal: true
+                                               });
+                                             }
+                                           });
 
-                 // Error dialog
-                 $('<div>Error fetching Pattadar details. Please try again later.</div>').dialog({
-                   title: 'Error',
-                   buttons: {
-                     OK: function () {
-                       $(this).dialog('close');
-                     }
-                   },
-                   modal: true
-                 });
-               }
-             });
            });
 });

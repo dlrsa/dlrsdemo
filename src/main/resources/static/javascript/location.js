@@ -361,7 +361,21 @@ $(document).ready(function() {
 
               // Validate input before making the AJAX request
               if (!subdivCode || !circleCode || !mouzaCode || !lotNo || !villageNo || !dagNo) {
-                alert("Please fill out all required fields.");
+                 $.confirm({
+                                    title: 'Missing Information',
+                                    content: 'Please fill out all required fields.',
+                                    type: 'red',
+                                    typeAnimated: true,
+                                    buttons: {
+                                        ok: {
+                                            text: "OK",
+                                            btnClass: 'btn-red',
+                                            action: function() {
+                                                console.log("OK clicked");
+                                            }
+                                        }
+                                    }
+                                });
                 return;
               }
 
