@@ -34,7 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
         // Extract JWT from "Authorization" header if present
         String header = request.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
-            jwt = header.substring(7);  // Remove "Bearer " prefix
+            jwt = header.substring(7);
         }
 
         // If JWT is not in the header, check for it in cookies

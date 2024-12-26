@@ -13,7 +13,6 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/secure")
-@CrossOrigin(origins =  {"http://localhost:8081" , "http://172.20.10.2:8081", "http://172.20.10.2:8080"})  // Allow a specific origin
 public class PattadarController {
 
     @Autowired
