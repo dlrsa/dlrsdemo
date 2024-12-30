@@ -4,6 +4,7 @@ import com.dlrs.dlrsdemo.dto.LocationResponseDto;
 import com.dlrs.dlrsdemo.dto.ReqDTO;
 import com.dlrs.dlrsdemo.service.PattadarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -75,6 +76,7 @@ public class PattadarController {
         Integer count = pattadarService.getAllPattadarsCount(reqDTO);
 
 
+
         pattadarService.addChithaPattadar(reqDTO, count+1);
         pattadarService.addChithaDagPattadar(reqDTO, count+1);
 
@@ -86,5 +88,4 @@ public class PattadarController {
     List<Map<String, Object>> getDagNo(@RequestParam String subdivCode, @RequestParam String circleCode, @RequestParam String mouzaCode, @RequestParam String lotNo, @RequestParam String villageNo, @RequestParam String pattaNo, @RequestParam String pattaType){
         return pattadarService.getAllDagNo(subdivCode, circleCode, mouzaCode, lotNo, villageNo, pattaNo,pattaType);
     }
-
 }

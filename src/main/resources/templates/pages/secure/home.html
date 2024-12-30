@@ -42,6 +42,10 @@
     <link rel="stylesheet" href="/common/sneat_template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
     <link rel="stylesheet" href="/common/sneat_template/assets/vendor/libs/apex-charts/apex-charts.css"/>
 
+    <script src="https://cdn.jsdelivr.net/npm/ol@10.3.1/dist/ol.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.3.1/ol.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/shapefile@0.6.3/dist/shapefile.min.js"></script>
+
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -49,6 +53,48 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="/common/sneat_template/assets/js/config.js"></script>
+
+
+    <style>
+     /* Container for the map with a stylish frame */
+        #map-container {
+            width: 100%;
+            margin: 0 auto;  /* Center the map container */
+            padding: 30px; /* Added more padding around the container */
+            background-color: #f4f4f4;  /* Light background around the map */
+            border-radius: 15px;  /* Rounded corners for the container */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Soft shadow around the container */
+            border: 2px solid #ddd;  /* Light border around the map */
+        }
+
+        /* Style for the map itself */
+        #map {
+            width: 100%;
+            height: 500px;
+            border-radius: 10px; /* Rounded corners for the map */
+            padding: 10px; /* Padding inside the map (if you want some space between map and its border) */
+        }
+
+         .popup {
+            background-color: white;
+            padding: 10px;
+            border: 1px solid #ccc;
+            position: absolute;
+            pointer-events: none;
+            max-width: 200px;
+        }
+
+        /* Header Style */
+        h1 {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 32px; /* Adjust the font size of the header */
+        }
+</style>
+
+
 </head>
 
 <body>
@@ -72,8 +118,13 @@
 
                 <div class="container-xxl flex-grow-1 container-p-y">
 
-
                     <div class="row">
+
+                        <!-- Map container with styled design -->
+                        <div  id="map-container" class="mb-3">
+                            <h5>Map of Assam</h5>
+                            <div id="map"></div>
+                        </div>
 
                         <div th:if="${#strings.trim(user.role) == 'SUPER_ADMIN' or #strings.trim(user.role) == 'SUPERVISOR'}"
                              class="col-lg-12 col-md-4 order-1">
@@ -382,10 +433,10 @@
                                 </div>
                             </div>
                         </div>
-
                         <!--/ Transactions -->
                     </div>
                 </div>
+
                 <!-- / Content -->
 
 
@@ -426,4 +477,216 @@
 <script th:src="@{/javascript/logout.js}" type="text/javascript"></script>
 <script th:src="@{/javascript/dashboard.js}" type="text/javascript"></script>
 
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Base map (OpenStreetMap)
+    const baseLayer = new ol.layer.Tile({
+        source: new ol.source.OSM(),
+    });
+
+    // Function to generate random colors
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    // Vector layer for state boundaries using TopoJSON
+    const stateBorders = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: '/maps/assam.topo.json',
+            format: new ol.format.TopoJSON(),
+        }),
+        style: function (feature) {
+            // Log the properties of each feature to check the correct name for district
+            const properties = feature.getProperties();
+            console.log(properties);  // This will log all properties of the current feature
+
+            // Get the district name from the 'district' property
+            const districtName = properties.district; // Access the 'district' property
+            console.log("District Name:", districtName);
+
+            // Generate a color for each district
+            const districtColor = getRandomColor(); // You can replace this with specific color logic
+
+            return new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: '#696cff', // Green border color
+                    width: 3,          // Border width
+                }),
+                fill: new ol.style.Fill({
+                    color: districtColor, // Fill color based on the district
+                }),
+            });
+        },
+    });
+
+    // Load and log the TopoJSON data
+    fetch('/maps/assam.topo.json')
+        .then(response => response.json())
+        .then(data => {
+            console.log("TopoJSON Data:", data); // Log the entire TopoJSON data structure
+        })
+        .catch(error => {
+            console.error("Error loading TopoJSON file:", error);
+        });
+
+    // Map instance
+    const map = new ol.Map({
+        target: 'map',
+        layers: [baseLayer, stateBorders], // Add base layer and state borders layer
+        view: new ol.View({
+            center: ol.proj.fromLonLat([92.9376, 26.2006]), // Centered on Assam (longitude, latitude)
+            zoom: 4, // Initial zoom level
+        }),
+        controls: [
+            new ol.control.Zoom(), // Adding the zoom control (zoom in/out buttons)
+            new ol.control.ZoomSlider(), // Optional: Adding zoom slider
+        ]
+    });
+
+    // Animate zoom from 4 to 7
+    setTimeout(() => {
+        map.getView().animate({
+            zoom: 7, // Target zoom level
+            duration: 2000, // Duration of the animation (2 seconds)
+        });
+    }, 500); // Delay the animation by 0.5 seconds
+
+    // Debugging: Listen for vector layer loading errors
+    stateBorders.getSource().on('error', function (event) {
+        console.error("Error loading vector source:", event);
+        alert("Error loading TopoJSON file. Check the console for details.");
+    });
+});
+
+
+
+//USING SHAPE FILE HERE .SHP
+<!--      document.addEventListener("DOMContentLoaded", function () {-->
+<!--    // Function to apply green dotted thick lines style to feature-->
+<!--    function applyGreenDottedStyle(feature) {-->
+<!--        const strokeColor = '#008000'; // Green color for the stroke-->
+<!--        feature.setStyle(new ol.style.Style({-->
+<!--            stroke: new ol.style.Stroke({-->
+<!--                color: strokeColor, // Green stroke-->
+<!--                width: 5,            // Thick line-->
+<!--                lineDash: [10, 10],  // Dotted line pattern (10px dotted, 10px space)-->
+<!--            }),-->
+<!--            fill: new ol.style.Fill({-->
+<!--                color: 'rgba(105, 108, 255, 0.2)', // Lightly transparent fill with #696cff-->
+<!--            }),-->
+<!--        }));-->
+<!--    }-->
+
+<!--    // Vector layer to hold Assam districts-->
+<!--    const vectorLayer = new ol.layer.Vector({-->
+<!--        source: new ol.source.Vector(),-->
+<!--        zIndex: 2, // Ensuring vector layer appears in front of the base map-->
+<!--    });-->
+
+<!--    // Base layer with OpenStreetMap-->
+<!--    const baseLayer = new ol.layer.Tile({-->
+<!--        source: new ol.source.OSM(),-->
+<!--        zIndex: 1, // Base layer is behind the vector layer-->
+<!--    });-->
+
+<!--    // Load and process the shapefile-->
+<!--    shapefile.open("/maps/2011_Dist.shp")-->
+<!--        .then(function (source) {-->
+<!--            console.log("Shapefile found and loaded.");-->
+<!--            source.read().then(function log(result) {-->
+<!--                if (result.done) {-->
+<!--                    console.log("Shapefile loading completed.");-->
+
+<!--                    // Map setup centered on Assam with initial zoom level 4-->
+<!--                    const mapView = new ol.View({-->
+<!--                        center: ol.proj.fromLonLat([92.9376, 26.2006]), // Center around Assam-->
+<!--                        zoom: 4, // Start at a zoom level of 4-->
+<!--                    });-->
+
+<!--                    const map = new ol.Map({-->
+<!--                        target: 'map',-->
+<!--                        layers: [baseLayer, vectorLayer], // Adding base layer first, then vector layer-->
+<!--                        view: mapView, // Apply the map view after the shapefile has been loaded-->
+<!--                    });-->
+
+<!--                    // Animate the zoom level from 4 to 7 after a slight delay-->
+<!--                    setTimeout(() => {-->
+<!--                        mapView.animate({-->
+<!--                            zoom: 7, // Target zoom level-->
+<!--                            duration: 2000, // Duration of animation in milliseconds (2 seconds)-->
+<!--                        });-->
+<!--                    }, 500); // Start animation after a 0.5-second delay-->
+
+<!--                    // Popup functionality to show district names on click-->
+<!--                    const popupElement = document.createElement('div');-->
+<!--                    popupElement.className = 'popup';-->
+<!--                    document.body.appendChild(popupElement);-->
+
+<!--                    map.on('singleclick', function (event) {-->
+<!--                        const feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {-->
+<!--                            return feature;-->
+<!--                        });-->
+
+<!--                        if (feature) {-->
+<!--                            const districtName = feature.get('DISTRICT');-->
+<!--                            const coordinate = event.coordinate;-->
+
+<!--                            // Show popup-->
+<!--                            popupElement.innerHTML = `District: ${districtName}`;-->
+<!--                            popupElement.style.left = `${coordinate[0]}px`;-->
+<!--                            popupElement.style.top = `${coordinate[1]}px`;-->
+<!--                            popupElement.style.display = 'block';-->
+<!--                        } else {-->
+<!--                            popupElement.style.display = 'none';-->
+<!--                        }-->
+<!--                    });-->
+
+<!--                } else {-->
+<!--                    const featureData = result.value;-->
+<!--                    const properties = featureData.properties;-->
+
+<!--                    // Check if the feature belongs to Assam based on ST_NM-->
+<!--                    if (properties.ST_NM === 'Assam') {-->
+<!--                        console.log(`Highlighting district: ${properties.DISTRICT}`);-->
+
+<!--                        try {-->
+<!--                            // Convert shapefile feature to OpenLayers feature-->
+<!--                            const feature = new ol.format.GeoJSON().readFeature(featureData);-->
+
+<!--                            // Apply green dotted thick line style to the district area-->
+<!--                            applyGreenDottedStyle(feature);-->
+
+<!--                            // Add the feature to the vector layer-->
+<!--                            vectorLayer.getSource().addFeature(feature);-->
+<!--                        } catch (e) {-->
+<!--                            console.error("Error reading feature:", e);-->
+<!--                        }-->
+<!--                    }-->
+
+<!--                    // Continue reading the next feature-->
+<!--                    source.read().then(log);-->
+<!--                }-->
+<!--            });-->
+<!--        })-->
+<!--        .catch(function (error) {-->
+<!--            console.error("Error loading shapefile:", error);-->
+<!--            alert("Error loading the shapefile. Please check the console for details.");-->
+<!--        });-->
+
+<!--    // Error handler for vector source-->
+<!--    vectorLayer.getSource().on('error', function (event) {-->
+<!--        console.error("Error loading vector source:", event);-->
+<!--        alert("Error loading Shapefile. Check the console for details.");-->
+<!--    });-->
+<!--});-->
+
+    </script>
+</body>
 </html>

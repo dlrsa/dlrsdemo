@@ -62,7 +62,6 @@ public class SecureHomeController {
         model.addAttribute("survCount", survList.size());
         model.addAttribute("team", team);
 
-
         return "/pages/secure/home";
     }
 
